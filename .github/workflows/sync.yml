@@ -3,7 +3,7 @@ name: Sync Telegram Photos
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "17,47 * * * *"
 
 permissions:
   contents: write
