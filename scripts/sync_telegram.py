@@ -79,23 +79,24 @@ PHOTOS_FILE.write_text(json.dumps(photos, indent=2, ensure_ascii=False), encodin
 def caption_text(item):
     return item.get("caption", "").lower()
 
+LENIN_RE = re.compile(r"\blenin\b", re.IGNORECASE)
+POSTER_RE = re.compile(r"\bposter\b", re.IGNORECASE)
+ARTWORK_RE = re.compile(r"\b(painting|drawing|art)\b", re.IGNORECASE)
+
+def caption_text(item):
+    return item.get("caption", "")
+
 def is_lenin(item):
-    return "lenin" in caption_text(item)
+    return LENIN_RE.search(caption_text(item)) is not None
 
 def is_lenin_poster(item):
     text = caption_text(item)
-    return "lenin" in text and "poster" in text
+    return LENIN_RE.search(text) is not None and POSTER_RE.search(text) is not None
 
 def is_lenin_art(item):
     text = caption_text(item)
-    return (
-        "lenin" in text
-        and (
-            "painting" in text
-            or "drawing" in text
-            or "art" in text
-        )
-    )
+    return LENIN_RE.search(text) is not None and ARTWORK_RE.search(text) is not None
+
 
 lenin_posters = []
 lenin_artworks = []
