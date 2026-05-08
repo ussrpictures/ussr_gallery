@@ -1,0 +1,44 @@
+[
+  {
+    "id": "AQADxsoxG7EYKUh-",
+    "image": "images/AQADxsoxG7EYKUh-.jpg",
+    "caption": "\"Lenin on the Moon\", painting by V.A. Khovaev, 1960",
+    "date": 1778237661,
+    "telegram_message_id": 23
+  },
+  {
+    "id": "AQADZ8IxGyMjEUh9",
+    "image": "images/AQADZ8IxGyMjEUh9.jpg",
+    "caption": "\"Drawing Lenin\", by Alexey Pakhomov, 1939",
+    "date": 1778237629,
+    "telegram_message_id": 21
+  },
+  {
+    "id": "AQADlsExG2XhIUp9",
+    "image": "images/AQADlsExG2XhIUp9.jpg",
+    "caption": "\"Lenin's Diploma\", painting by Boris Kupnevskyi, 1950",
+    "date": 1778228401,
+    "telegram_message_id": 9
+  },
+  {
+    "id": "AQADV7gxGyZGCUp-",
+    "image": "images/AQADV7gxGyZGCUp-.jpg",
+    "caption": "“Lenin in Razliv”, painting by Arkady Plastov, 1948",
+    "date": 1778228317,
+    "telegram_message_id": 5
+  },
+  {
+    "id": "AQAD47AxG7tcMUh-",
+    "image": "images/AQAD47AxG7tcMUh-.jpg",
+    "caption": "\"Lenin's Speech at the 3rd Congress of the Komsomol\", painting by Boris Ioganson, 1950",
+    "date": 1778228261,
+    "telegram_message_id": 3
+  },
+  {
+    "id": "AQAD8-kxG-k-8Ep-",
+    "image": "images/AQAD8-kxG-k-8Ep-.jpg",
+    "caption": "\"Lenin and Krupskaya in Ufa\", painting by Victor Andreevich Pozdnov, 1969",
+    "date": 1778226394,
+    "telegram_message_id": 2
+  }
+]
