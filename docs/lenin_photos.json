@@ -1,5 +1,12 @@
 [
   {
+    "id": "AQAD0dUxG1UXKUh-",
+    "image": "images/AQAD0dUxG1UXKUh-.jpg",
+    "caption": "The statue of Lenin in the Kremlin,  1975",
+    "date": 1778255784,
+    "telegram_message_id": 83
+  },
+  {
     "id": "AQADmNAxG32u4Uh-",
     "image": "images/AQADmNAxG32u4Uh-.jpg",
     "caption": "The grand opening of the monument to Lenin in Ulan Ude (Buryat ASSR). In the center is the sculptor Georgy Vasilyevich Neroda. November 4, 1971",
@@ -54,6 +61,20 @@
     "caption": "A sculpture of Vladimir Lenin’s head looks over Pyramiden toward the Nordenskiöld Glacier, Svalbard, 2021",
     "date": 1778250811,
     "telegram_message_id": 70
+  },
+  {
+    "id": "AQADxdsxG0XhcUp9",
+    "image": "images/AQADxdsxG0XhcUp9.jpg",
+    "caption": "A float with a large portrait of Lenin leads the parade through the centre of Kiev, Ukraine, as part of the USSR's Revolution Day celebrations, 7th November 1989",
+    "date": 1778250781,
+    "telegram_message_id": 69
+  },
+  {
+    "id": "AQADRM8xG4RFcEl-",
+    "image": "images/AQADRM8xG4RFcEl-.jpg",
+    "caption": "Busts of Lenin in GUM department store, 1989 (photo by Igor Stomakhin)",
+    "date": 1778250743,
+    "telegram_message_id": 67
   },
   {
     "id": "AQADYdAxGwPDoEl-",
@@ -257,13 +278,6 @@
     "caption": "Lenin monument in Nizhny Tagil, 2011 (by S.A. Gavrilov)",
     "date": 1778249566,
     "telegram_message_id": 26
-  },
-  {
-    "id": "AQAD8hVrG-PyiEt-",
-    "image": "images/AQAD8hVrG-PyiEt-.jpg",
-    "caption": "Athletes Parade in Leningrad, 1933",
-    "date": 1778248458,
-    "telegram_message_id": 5315
   },
   {
     "id": "AQADf8MxG3sGIEl-",
