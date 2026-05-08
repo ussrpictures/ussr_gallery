@@ -75,3 +75,56 @@ for update in updates.get("result", []):
 
 STATE_FILE.write_text(json.dumps(state, indent=2), encoding="utf-8")
 PHOTOS_FILE.write_text(json.dumps(photos, indent=2, ensure_ascii=False), encoding="utf-8")
+
+def caption_text(item):
+    return item.get("caption", "").lower()
+
+def is_lenin(item):
+    return "lenin" in caption_text(item)
+
+def is_lenin_poster(item):
+    text = caption_text(item)
+    return "lenin" in text and "poster" in text
+
+def is_lenin_art(item):
+    text = caption_text(item)
+    return (
+        "lenin" in text
+        and (
+            "painting" in text
+            or "drawing" in text
+            or "art" in text
+        )
+    )
+
+lenin_posters = []
+lenin_artworks = []
+lenin_photos = []
+
+for item in photos:
+    if not is_lenin(item):
+        continue
+
+    if is_lenin_poster(item):
+        lenin_posters.append(item)
+    elif is_lenin_art(item):
+        lenin_artworks.append(item)
+    else:
+        lenin_photos.append(item)
+
+(DOCS / "lenin_posters.json").write_text(
+    json.dumps(lenin_posters, indent=2, ensure_ascii=False),
+    encoding="utf-8",
+)
+
+(DOCS / "lenin_artworks.json").write_text(
+    json.dumps(lenin_artworks, indent=2, ensure_ascii=False),
+    encoding="utf-8",
+)
+
+(DOCS / "lenin_photos.json").write_text(
+    json.dumps(lenin_photos, indent=2, ensure_ascii=False),
+    encoding="utf-8",
+)
+
+
