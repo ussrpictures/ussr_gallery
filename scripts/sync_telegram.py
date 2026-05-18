@@ -1,10 +1,9 @@
 import json
 import os
 import pathlib
+import re
 import urllib.request
 import urllib.parse
-import re
-
 
 TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 API = f"https://api.telegram.org/bot{TOKEN}"
@@ -18,6 +17,25 @@ PHOTOS_FILE = DOCS / "photos.json"
 DOCS.mkdir(exist_ok=True)
 IMAGES.mkdir(exist_ok=True)
 
+SYNC_TAG_LENIN_RE = re.compile(r"(?:^|\s)#?Sync_Tag\s*:\s*Lenin\b", re.IGNORECASE)
+LENIN_RE = re.compile(r"\blenin\b", re.IGNORECASE)
+NON_PERSON_LENIN_RE = re.compile(
+    r"\b(?:lenin\s+(?:mausoleum|maosoleum|prize|portrait)|order\s+of\s+lenin)\b",
+    re.IGNORECASE,
+)
+POSTER_RE = re.compile(r"\bposter\b", re.IGNORECASE)
+ARTWORK_RE = re.compile(r"\b(painting|drawing|art)\b", re.IGNORECASE)
+
+def has_sync_tag_lenin(text):
+    return SYNC_TAG_LENIN_RE.search(text or "") is not None
+
+def clean_caption(text):
+    text = SYNC_TAG_LENIN_RE.sub(" ", text or "")
+    return re.sub(r"[ \t]{2,}", " ", text).strip()
+
+def lenin_person_text(text):
+    return NON_PERSON_LENIN_RE.sub(" ", text or "")
+
 def get_json(url):
     with urllib.request.urlopen(url) as response:
         return json.loads(response.read().decode("utf-8"))
@@ -30,9 +48,17 @@ state = {"offset": 0}
 if STATE_FILE.exists():
     state = json.loads(STATE_FILE.read_text(encoding="utf-8"))
 
+lenin_tagged_ids = set(state.get("lenin_tagged_ids", []))
+
 photos = []
 if PHOTOS_FILE.exists():
     photos = json.loads(PHOTOS_FILE.read_text(encoding="utf-8"))
+
+for item in photos:
+    caption = item.get("caption", "")
+    if has_sync_tag_lenin(caption):
+        lenin_tagged_ids.add(item["id"])
+        item["caption"] = clean_caption(caption)
 
 known_ids = {item["id"] for item in photos}
 
@@ -58,6 +84,10 @@ for update in updates.get("result", []):
     if unique_id in known_ids:
         continue
 
+    caption = post.get("caption", "")
+    if has_sync_tag_lenin(caption):
+        lenin_tagged_ids.add(unique_id)
+
     file_info = get_json(f"{API}/getFile?file_id={urllib.parse.quote(file_id)}")
     file_path = file_info["result"]["file_path"]
 
@@ -70,35 +100,30 @@ for update in updates.get("result", []):
     photos.insert(0, {
         "id": unique_id,
         "image": f"images/{local_name}",
-        "caption": post.get("caption", ""),
+        "caption": clean_caption(caption),
         "date": post.get("date"),
         "telegram_message_id": post.get("message_id"),
     })
 
+state["lenin_tagged_ids"] = sorted(lenin_tagged_ids)
 STATE_FILE.write_text(json.dumps(state, indent=2), encoding="utf-8")
 PHOTOS_FILE.write_text(json.dumps(photos, indent=2, ensure_ascii=False), encoding="utf-8")
-
-def caption_text(item):
-    return item.get("caption", "").lower()
-
-LENIN_RE = re.compile(r"\blenin\b", re.IGNORECASE)
-POSTER_RE = re.compile(r"\bposter\b", re.IGNORECASE)
-ARTWORK_RE = re.compile(r"\b(painting|drawing|art)\b", re.IGNORECASE)
 
 def caption_text(item):
     return item.get("caption", "")
 
 def is_lenin(item):
-    return LENIN_RE.search(caption_text(item)) is not None
+    if item.get("id") in lenin_tagged_ids:
+        return True
+    return LENIN_RE.search(lenin_person_text(caption_text(item))) is not None
 
 def is_lenin_poster(item):
     text = caption_text(item)
-    return LENIN_RE.search(text) is not None and POSTER_RE.search(text) is not None
+    return is_lenin(item) and POSTER_RE.search(text) is not None
 
 def is_lenin_art(item):
     text = caption_text(item)
-    return LENIN_RE.search(text) is not None and ARTWORK_RE.search(text) is not None
-
+    return is_lenin(item) and ARTWORK_RE.search(text) is not None
 
 lenin_posters = []
 lenin_artworks = []
@@ -129,5 +154,3 @@ for item in photos:
     json.dumps(lenin_photos, indent=2, ensure_ascii=False),
     encoding="utf-8",
 )
-
-
